@@ -5,11 +5,11 @@ VAR $mystr,STRING,100,”Hello world MIS!!!”
 VAR $myint1,NUMERIC,10
 VAR $mystr1,STRING,50,"a7mad"
 VAR $mystr2,STRING,50,"joe"
-JMP L1
+JMP lab1
 MUL $myint,10,5,30,$myint1
 SUB $myint,100,$myint2
 DIV $myfloat,100,$myint2
-LABEL L1
+LABEL lab1
 ADD $myint,100,20.7,300,$myint1
 OUT $myint,$mychar
 ASSIGN $myint,$myint1
