@@ -1,12 +1,13 @@
 #include "wrap.h"
-Wrap::Wrap(string filename)
+Wrap::Wrap(vector <string> line)
 {
-    parser.parsing(filename, lines);
+    //parser.parsing(filename, lines);
+
     dtypemap["STRING"] = new StringVar();
     dtypemap["REAL"] = new RealVar();
     dtypemap["NUMERIC"] = new NumericVar();
     dtypemap["CHAR"] = new CharVar();
-
+    lines = line;
     ops["ADD"] = new ADD();
     ops["SUB"] = new SUB();
     ops["MUL"] = new MULT();

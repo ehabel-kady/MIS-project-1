@@ -2,7 +2,6 @@
 #include "realvar.h"
 #include "numericvar.h"
 #include "charvar.h"
-//#include "maps.h"
 #include <unistd.h>
 #include <vector>
 #include "parse.h"
@@ -19,7 +18,7 @@ class Wrap{
         vector <string> :: iterator i;
         vector <string> :: reverse_iterator ir;
     public:
-        Wrap(string filename);
+        Wrap(vector <string> line);
         void Save_var(string line);
         void action();
         void check_labels();

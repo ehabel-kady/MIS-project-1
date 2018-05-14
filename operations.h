@@ -2,6 +2,7 @@
 #include "var.h"
 #include <time.h>
 #include <unistd.h>
+//#include "Connection.h"
 
 using namespace std;
 
@@ -34,7 +35,7 @@ class ADD: public operation
         ADD(){}
         void perform(map <pair<string,string>, Var*>& getmap, string opline)
         {
-            cout<<"this is ADD op\n";
+            //cout<<"this is ADD op\n";
             string str = "";
             string var="";
             double new_var=0; // a variable to store the sum of the numbers
@@ -84,7 +85,12 @@ class ADD: public operation
                         RealVar* tmp = dynamic_cast<RealVar*>(getmap[p3[1]]);
                         new_var += tmp->getvalue();
                     }
-                    else{cout<<"There are no variable with that name "<<str<<"\n";}
+                    else{
+                        ofstream outfile;
+                        outfile.open("error.err", ios_base::app);
+                        outfile<<"There are no variable named "<<str<<"\n";
+                        outfile.close();
+                    }
                 }
                 else{
                     new_var += stof(str);
@@ -93,7 +99,7 @@ class ADD: public operation
             if(setv1 != 0) {setv1->setvalue(new_var); setv1 = 0;}
             else if(setv2 !=0 ){setv2 ->setvalue(new_var); setv2 = 0;}
             str = "";
-            cout<<new_var<<endl;
+            //cout<<new_var<<endl;
             // the new_var is the variable that hold the result after the add operation
         }
         ~ADD(){}
@@ -131,7 +137,12 @@ class SUB: public operation
                     RealVar* tmp = dynamic_cast<RealVar*>(getmap[p2[1]]);
                     new_var = tmp->getvalue();
                 }
-                else{cout<<"There are no variable with that name !"<<second_p<<"\n"; return;}
+                else{
+                    ofstream outfile;
+                    outfile.open("error.err", ios_base::app);
+                    outfile<<"There are no variable with that name !"<<second_p<<"\n";
+                    outfile.close();
+                    return;}
             }else
                 new_var = stof(second_p);
 
@@ -147,7 +158,10 @@ class SUB: public operation
                     RealVar* tmp = dynamic_cast<RealVar*>(getmap[p3[1]]);
                     new_var -= tmp->getvalue();
                 }
-                else{cout<<"There are no variable with that name !"<<third_p<<"\n";return;}
+                else{ofstream outfile;
+                    outfile.open("error.err", ios_base::app);
+                    outfile<<"There are no variable with that name !"<<third_p<<"\n";
+                    outfile.close();return;}
             }else
                 new_var -= stof(third_p);
 
@@ -161,8 +175,12 @@ class SUB: public operation
                 RealVar* tmp = dynamic_cast<RealVar*>(getmap[p1[1]]);
                 tmp->setvalue(new_var);
             }
-            else{cout<<"There are no variable with that name "<<first_p<<"\n";return;}
-            cout<<new_var<<endl;
+            else{
+                ofstream outfile;
+                outfile.open("error.err", ios_base::app);
+                outfile<<"There are no variable with that name !"<<first_p<<"\n";
+                outfile.close();
+            }
 
         }
         ~SUB(){}
@@ -194,7 +212,14 @@ class MULT: public operation
                 new_var = tmp->getvalue();
                 setv2 = tmp;
             }
-            else{cout<<"There are no variable with that name "<<new_var_name<<"\n"; return;}
+            else{
+                ofstream outfile;
+                    outfile.open("error.err", ios_base::app);
+                    outfile<<"There are no variable with that name "<<new_var_name<<"\n";
+                    outfile.close();
+                
+                return;
+            }
 
             while(getline(iss,str,','))
             {
@@ -208,7 +233,10 @@ class MULT: public operation
                         RealVar* tmp = dynamic_cast<RealVar*>(getmap[p3[1]]);
                         new_var *= tmp->getvalue();
                     }
-                    else{cout<<"There are no variable with that name "<<str<<"\n";}
+                    else{ofstream outfile;
+                    outfile.open("error.err", ios_base::app);
+                    outfile<<"There are no variable with that name "<<str<<"\n";
+                    outfile.close();}
                 }
                 else{
                     new_var *= stof(str);
@@ -217,7 +245,7 @@ class MULT: public operation
             if(setv1 != 0) {setv1->setvalue(new_var); setv1 = 0;}
             else if(setv2 !=0 ){setv2 ->setvalue(new_var); setv2 = 0;}
             str = "";
-            cout<<new_var<<endl;
+            //cout<<new_var<<endl;
             // the new_var is the variable that hold the result after the add operation
         }
         ~MULT(){}
@@ -256,7 +284,11 @@ class DIV: public operation
                         new_var = tmp->getvalue(); // add the value to new_var
                     else{cout<<"Error divisible by zero "<<'\n';return;}
                 }
-                else{cout<<"There are no variable with that name "<<second_p<<"\n";return;}
+                else{ofstream outfile;
+                    outfile.open("error.err", ios_base::app);
+                    outfile<<"There are no variable with that name !"<<second_p<<"\n";
+                    outfile.close();
+                    return;}
             }else
                 new_var = stof(second_p);
 
@@ -275,7 +307,10 @@ class DIV: public operation
                         new_var /= tmp->getvalue(); // add the value to new_var
                     else{cout<<"Error divisible by zero "<<'\n';return;}
                 }
-                else{cout<<"There are no variable with that name "<<third_p<<"\n";return;}
+                else{ofstream outfile;
+                    outfile.open("error.err", ios_base::app);
+                    outfile<<"There are no variable with that name !"<<third_p<<"\n";
+                    outfile.close();return;}
             }else
                 new_var /= stof(third_p);
 
@@ -288,7 +323,10 @@ class DIV: public operation
                 RealVar* tmp = dynamic_cast<RealVar*>(getmap[p1[1]]);
                 tmp->setvalue(new_var);
             }
-            else{cout<<"There are no variable with that name "<<first_p<<"\n";return;}
+            else{ofstream outfile;
+                    outfile.open("error.err", ios_base::app);
+                    outfile<<"There are no variable with that name !"<<first_p<<"\n";
+                    outfile.close();return;}
 
             cout<<new_var<<endl;
 
@@ -308,7 +346,7 @@ class ASSIGN: public DIV
             stringstream iss(opline);
             getline(iss,new_var_name,','); // parse the given line to the first comma which is the storing variable
             getline(iss,newvar,',');
-            cout<<newvar<<endl;
+            //cout<<newvar<<endl;
              // create an object from struct pair
             pair_array p1 = Pair1(new_var_name);
             if(newvar[0] == '$')
@@ -334,19 +372,31 @@ class ASSIGN: public DIV
                     CharVar* tmp2 = dynamic_cast<CharVar*>(getmap[p2[3]]);
                     tmp1->setvalue(tmp2->getvalue());
                 }
-                    else{cout<<"Error cannot find a variable or cannot assign different data type of values\n";}
+                    else{
+                        ofstream outfile;
+                    outfile.open("error.err", ios_base::app);
+                    outfile<<"Error cannot find a variable or cannot assign different data type of values\n";
+                    outfile.close();}
             }
             else if(newvar[0] == '"'){
                 if((getmap.find(p1[2]) != getmap.end())){ // to check if the two variables are string value
                     StringVar* tmp1 = dynamic_cast<StringVar*>(getmap[p1[2]]);
                     tmp1->setvalue(newvar);
-                }else{cout<<"Cannot find the variable "<<new_var_name<<"\n";}
+                }else{
+                    ofstream outfile;
+                    outfile.open("error.err", ios_base::app);
+                    outfile<<"Cannot find the variable "<<new_var_name<<"\n";
+                    outfile.close();
+                    }
             }
             else if(newvar[0] == '\''){
                 if((getmap.find(p1[3]) != getmap.end())){ // to check if the two variables are string value
                     CharVar* tmp1 = dynamic_cast<CharVar*>(getmap[p1[3]]);
                     tmp1->setvalue(newvar[1]);
-                }else{cout<<"Cannot find the variable "<<new_var_name<<"\n";}
+                }else{ofstream outfile;
+                    outfile.open("error.err", ios_base::app);
+                    outfile<<"Cannot find the variable "<<new_var_name<<"\n";
+                    outfile.close();}
             }
             else{
                  if((getmap.find(p1[0]) != getmap.end()) ){ // to check if the two variables are numeric value
@@ -375,24 +425,47 @@ class OUT: public operation
                       pair_array p1 = Pair1(var);
                     if(getmap.find(p1[0]) != getmap.end()){ // to get numeric value
                         NumericVar* tmp = dynamic_cast<NumericVar*>(getmap[p1[0]]);
-                        cout<<tmp->getvalue()<<endl;// add the value to new_var
+                        ofstream outfile;
+                        outfile.open("output.out", ios_base::app);
+                        outfile<<tmp->getvalue()<<endl;// add the value to new_var
+                        outfile.close();
                     }
                     else if(getmap.find(p1[1]) != getmap.end()){// to get real value
                         RealVar* tmp = dynamic_cast<RealVar*>(getmap[p1[1]]);
-                        cout<<tmp->getvalue()<<endl;
+                        ofstream outfile;
+                        outfile.open("output.out", ios_base::app);
+                        outfile<<tmp->getvalue()<<endl;// add the value to new_var
+                        outfile.close();
                     }
                     else if(getmap.find(p1[2]) != getmap.end()){// to get string value
                         StringVar* tmp = dynamic_cast<StringVar*>(getmap[p1[2]]);
-                        cout<<tmp->getvalue()<<endl;
+                        ofstream outfile;
+                        outfile.open("output.out", ios_base::app);
+                        outfile<<tmp->getvalue()<<endl;// add the value to new_var
+                        outfile.close();
                     }
                     else if(getmap.find(p1[3]) != getmap.end()){// to get char value
                         CharVar* tmp = dynamic_cast<CharVar*>(getmap[p1[3]]);
-                        cout<<tmp->getvalue()<<endl;
+                        ofstream outfile;
+                        outfile.open("output.out", ios_base::app);
+                        outfile<<tmp->getvalue()<<endl;// add the value to new_var
+                        outfile.close();
                     }
-                    else{cout<<"There are no variable with that name !\n";}
+                    else{
+                        ofstream outfile;
+                        outfile.open("error.err", ios_base::app);
+                        outfile<<"There are no variable with that name !\n";
+                        outfile.close();
+                        }
                     var = "";
                 }
-                else  cout<<var<<endl;
+                else
+                {
+                    ofstream outfile;
+                        outfile.open("output.out", ios_base::app);
+                        outfile<<var <<" \n";
+                        outfile.close();
+                }
             }
         }
 };
@@ -413,7 +486,12 @@ class Sleep: public operation
                     RealVar* tmp = dynamic_cast<RealVar*>(getmap[p2[1]]);
                     usleep((tmp->getvalue())*10000);
                 }
-                else{cout<<"There are no variable with that name !"<<opline<<"\n"; return;}
+                else{
+                    ofstream outfile;
+                    outfile.open("error.err", ios_base::app);
+                    outfile<<"There are no variable with that name !"<<opline<<"\n";
+                    outfile.close();
+                    return;}
         }
         else
         usleep(stof(opline)*10000);

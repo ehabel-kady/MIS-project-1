@@ -1,0 +1,5 @@
+all:
+	g++ -std=c++11 charvar.cpp numericvar.cpp parse.cpp realvar.cpp stringvar.cpp var.cpp wrap.cpp Connection.cpp TCPServerSocket.cpp TCPSocket.cpp server.cpp GarbageCollector.cpp Thread.cpp -lpthread
+	./a.out
+	gcc client.c -o client
+	./client
