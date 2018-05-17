@@ -49,12 +49,12 @@ void * Connection::threadMainBody (void * arg)
             tcpSocket->writeToSocket(buffer,fsize); // Write the buffer to the socket
             free(buffer);	// Free the buffer
             fclose(f);	// Close the file
-        // }
-        // else
-        // {
-        //     perror("Error With File\n");	// Print an error message
-        //     tcpSocket->writeToSocket("Error\n",6);// Write error to the socket
-        // }
+        
+    }
+    else
+    {
+        perror("Error With File\n");	// Print an error message
+        tcpSocket->writeToSocket("Error\n",6);// Write error to the socket
     }
     // Shutdown the TCP Socket
     tcpSocket->shutDown();

@@ -15,6 +15,7 @@ Wrap::Wrap(vector <string> line)
     ops["ASSIGN"] = new ASSIGN();
     ops["OUT"] = new OUT();
     ops["SLEEP"] = new Sleep();
+    ops["SET_STR_CHAR"] = new SET_STR_CHAR();
 }
 void Wrap::action()
 {
