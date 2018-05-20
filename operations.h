@@ -2,7 +2,11 @@
 #include "var.h"
 #include <time.h>
 #include <unistd.h>
+//#include "maps.h"
+#include <string>
 //#include "Connection.h"
+vector <string> output;
+vector <string> errors;
 
 using namespace std;
 
@@ -425,6 +429,7 @@ class OUT: public operation
                       pair_array p1 = Pair1(var);
                     if(getmap.find(p1[0]) != getmap.end()){ // to get numeric value
                         NumericVar* tmp = dynamic_cast<NumericVar*>(getmap[p1[0]]);
+                        //output.push_back(to_string(tmp->getvalue()));
                         ofstream outfile;
                         outfile.open("output.out", ios_base::app);
                         outfile<<tmp->getvalue()<<endl;// add the value to new_var
@@ -432,6 +437,7 @@ class OUT: public operation
                     }
                     else if(getmap.find(p1[1]) != getmap.end()){// to get real value
                         RealVar* tmp = dynamic_cast<RealVar*>(getmap[p1[1]]);
+                        //output.push_back(to_string(tmp->getvalue()));
                         ofstream outfile;
                         outfile.open("output.out", ios_base::app);
                         outfile<<tmp->getvalue()<<endl;// add the value to new_var
@@ -439,6 +445,7 @@ class OUT: public operation
                     }
                     else if(getmap.find(p1[2]) != getmap.end()){// to get string value
                         StringVar* tmp = dynamic_cast<StringVar*>(getmap[p1[2]]);
+                        //output.push_back(tmp->getvalue());
                         ofstream outfile;
                         outfile.open("output.out", ios_base::app);
                         outfile<<tmp->getvalue()<<endl;// add the value to new_var
@@ -446,12 +453,14 @@ class OUT: public operation
                     }
                     else if(getmap.find(p1[3]) != getmap.end()){// to get char value
                         CharVar* tmp = dynamic_cast<CharVar*>(getmap[p1[3]]);
+                        //output.push_back(to_string(tmp->getvalue()));
                         ofstream outfile;
                         outfile.open("output.out", ios_base::app);
                         outfile<<tmp->getvalue()<<endl;// add the value to new_var
                         outfile.close();
                     }
                     else{
+                        //errors.push_back("There are no variable with that name !");
                         ofstream outfile;
                         outfile.open("error.err", ios_base::app);
                         outfile<<"There are no variable with that name !\n";
@@ -461,6 +470,7 @@ class OUT: public operation
                 }
                 else
                 {
+                    //output.push_back(to_string(var));
                     ofstream outfile;
                         outfile.open("output.out", ios_base::app);
                         outfile<<var <<" \n";

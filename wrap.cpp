@@ -80,6 +80,13 @@ void Wrap::action()
             }else cout<<"Undefined Object Identifier...\n";
         }
     }
+    FILE * f = fopen("error.err","r"); // Try to open the file
+    long fsize = ftell(f);
+    char * buffer = (char *) calloc(fsize+1,sizeof(char));
+    fseek (f,0,0);  // Seek the beginning of the file
+    fread(buffer,1,fsize,f); // Read the whole file into the buffer
+    printf("%s \n", buffer);
+    fclose(f);
 
 }
 void Wrap::Save_var(string line)

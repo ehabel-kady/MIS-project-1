@@ -47,6 +47,8 @@ void * Connection::threadMainBody (void * arg)
             fread(buffer,1,fsize,f); // Read the whole file into the buffer
             printf("%s \n", buffer);
             tcpSocket->writeToSocket(buffer,fsize); // Write the buffer to the socket
+            // for(vector<string>::const_iterator i = output.begin(); i != output.end(); ++i)
+            //     cout << *i << '\n';
             free(buffer);	// Free the buffer
             fclose(f);	// Close the file
         
