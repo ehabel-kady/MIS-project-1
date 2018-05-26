@@ -2,6 +2,7 @@
 #include "var.h"
 #include <time.h>
 #include <unistd.h>
+
 //#include "Connection.h"
 
 using namespace std;
@@ -498,4 +499,59 @@ class Sleep: public operation
     }
     ~Sleep(){}
 
+};
+class SET_STR_CHAR: public operation
+{
+    public:
+    SET_STR_CHAR(){}
+    void perform(map <pair<string,string>, Var*>& getmap, string opline)
+    {
+        int index = 0;
+        char swap;
+        string tmpint = "";
+        string tmpchr = "";
+        string varx ="";
+        stringstream iss(opline);
+
+        getline(iss, varx, ',');
+        getline(iss, tmpint, ',');
+        getline(iss, tmpchr, ',');
+        index = stoi(tmpint);
+        swap = tmpchr[1];
+
+        if(varx[0] == '$')
+        {
+            pair_array p2 = Pair1(varx);
+            if(getmap.find(p2[2]) != getmap.end()){// to get string value
+                StringVar* tmp = dynamic_cast<StringVar*>(getmap[p2[2]]);
+                varx = tmp->getvalue();
+                if(index > varx.length())
+                {
+                    ofstream outfile;
+                    outfile.open("error.err", ios_base::app);
+                    outfile<<"Index error! out of range\n";
+                    outfile.close();
+                }
+                else
+                {
+                    varx[index] = swap;
+                    tmp->setvalue(varx);
+                }
+            }
+                else
+                {
+                    ofstream outfile;
+                    outfile.open("error.err", ios_base::app);
+                    outfile<<"There are no variable with that name !"<<opline<<"\n";
+                    outfile.close();
+                }
+        }
+        else
+        {
+            ofstream outfile;
+            outfile.open("error.err", ios_base::app);
+            outfile<<"Syntax error!\n";
+            outfile.close();
+        }
+    }
 };

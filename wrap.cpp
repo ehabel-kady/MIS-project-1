@@ -15,6 +15,9 @@ Wrap::Wrap(vector <string> line)
     ops["ASSIGN"] = new ASSIGN();
     ops["OUT"] = new OUT();
     ops["SLEEP"] = new Sleep();
+    ops["SET_STR_CHAR"] = new SET_STR_CHAR();
+    erline = parser.parsing(line);
+    cout<<"this is the error index line "<<erline<<'\n';
 }
 void Wrap::action()
 {

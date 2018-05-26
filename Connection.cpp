@@ -40,21 +40,43 @@ void * Connection::threadMainBody (void * arg)
         }
             Wrap wraper(file);
             wraper.action();
-            FILE * f = fopen("error.err","r"); // Try to open the file
-            long fsize = ftell(f);
-            char * buffer = (char *) calloc(fsize+1,sizeof(char));
-            fseek (f,0,0);  // Seek the beginning of the file
-            fread(buffer,1,fsize,f); // Read the whole file into the buffer
-            printf("%s \n", buffer);
-            tcpSocket->writeToSocket(buffer,fsize); // Write the buffer to the socket
-            free(buffer);	// Free the buffer
-            fclose(f);	// Close the file
-        // }
-        // else
-        // {
-        //     perror("Error With File\n");	// Print an error message
-        //     tcpSocket->writeToSocket("Error\n",6);// Write error to the socket
-        // }
+
+
+            char * buffer = (char *) calloc(1024,sizeof(char));
+            string lines;
+            ifstream myfile ("error.err");
+            if (myfile.is_open())
+            {
+                while (myfile.good())
+                {
+                    getline (myfile,lines);
+                    lines+= '\n';
+                    strcat(buffer,lines.c_str());
+                    cout << lines << endl;
+                }
+                myfile.close();
+            }
+            else 
+            {  
+                cout << "Unable to open file"; 
+
+            }
+
+            // FILE * f = fopen("error.err","r"); // Try to open the file
+            // long fsize = ftell(f);
+            // char * buffer = (char *) calloc(fsize+1,sizeof(char));
+            // fseek (f,0,0);  // Seek the beginning of the file
+            // fread(buffer,1,fsize,f); // Read the whole file into the buffer
+            // printf("%s \n", buffer);
+             tcpSocket->writeToSocket(buffer,1024); // Write the buffer to the socket
+            // free(buffer);	// Free the buffer
+            // fclose(f);	// Close the file
+        
+    }
+    else
+    {
+        perror("Error With File\n");	// Print an error message
+        tcpSocket->writeToSocket("Error\n",6);// Write error to the socket
     }
     // Shutdown the TCP Socket
     tcpSocket->shutDown();

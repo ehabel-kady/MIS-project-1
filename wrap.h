@@ -3,9 +3,9 @@
 #include "numericvar.h"
 #include "charvar.h"
 #include <unistd.h>
-#include <vector>
 #include "parse.h"
 #include "operations.h"
+
 class Wrap{
     protected:
         map <pair<string,string>, Var*> varmap; //(variable map) map that has two keys to search for the variable and a value pointer to the passed object from cloning
@@ -17,6 +17,7 @@ class Wrap{
         vector <string> lines;
         vector <string> :: iterator i;
         vector <string> :: reverse_iterator ir;
+        short int erline = 0; // index to the first error line after parsing
     public:
         Wrap(vector <string> line);
         void Save_var(string line);
