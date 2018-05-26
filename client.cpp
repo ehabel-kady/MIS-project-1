@@ -8,7 +8,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <syscall.h>
-#define PORT 9999
+#define PORTNUM 9999
 
 //using namespace std;
 int main(int argc, char const *argv[])
@@ -26,7 +26,7 @@ int main(int argc, char const *argv[])
 
     memset(&serv_addr, '0', sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(PORT);
+    serv_addr.sin_port = htons(PORTNUM);
     // Convert IPv4 and IPv6 addresses from text to binary form
     if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0)
     {
@@ -55,7 +55,13 @@ int main(int argc, char const *argv[])
             printf("File is sent to server\n");
             valread = read( sock , return_content, 1024);
             printf("%s\n",return_content );
-            printf("%ld \n", fsize);
+            FILE * f = fopen("error.err","r"); // Try to open the file
+            long size = ftell(f);
+            char * buff = (char *) calloc(size+1,sizeof(char));
+            fseek (f,0,0);  // Seek the beginning of the file
+            fread(buff,1,size,f); // Read the whole file into the buffer
+            printf("%s \n", buff);
+            printf("%ld \n", size);
         }
         else
         {
