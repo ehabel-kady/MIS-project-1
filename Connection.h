@@ -8,7 +8,6 @@ class Connection : public Thread //Inherit from Thread
     private:
         TCPSocket * tcpSocket; // TCP Socket for communication with client
         Connection * next_connection;  // A way to build a linked list of connections for the garbage collector to be able to track them
-        
     public:
         Connection(TCPSocket * p_tcpSocket); // Constructor: Set client connected TCP socket
         void * threadMainBody (void * arg);	// Main thread body that serves the connection

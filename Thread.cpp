@@ -19,7 +19,7 @@ void Thread::cleanup(void * target_thread)
 // Thread Constructor: Allows for overriding the pthread_create start routine parameters with another static method than "run" if needed
 Thread::Thread(void *(*_threadRoutine) (void *))
 {
-    size_t stacksize = 1024*1024*4;  // Set stack to 4 MB   
+    size_t stacksize = 1024*1024*4;  // Set stack to 4 MB
     running = false;    // Set running to false
     started = false;    // Set started to false
     termination_request = false;    // Set termination request to false
@@ -68,14 +68,27 @@ void Thread::start()
     else setRunning(true); // Else thread is marked running 
 }
 
+// // Static method passed to pthread_create
+// void * Thread::run(void * arg)
+// {
+// 	Thread * me = (Thread *) arg; // Cast the arg to Thread * which is the current thread
+//         // Push the cleanup static function to the cleanup functions stack to be invoked within pthread_exit
+//         // Notice the close curly bracket that substitute for the complementary pthread_cleanup_pop
+// //        pthread_cleanup_push(cleanup,arg); }  
+// //   	pthread_detach (me->pthread); 
+// 	me->threadMainBody(arg); //Invoke the thread main function body
+// 	me->cleanup(arg);
+//         pthread_exit(NULL); // Invoke pthread_exit to terminate and invoke the cleanup functions.
+// }
+
 // Static method passed to pthread_create
 void * Thread::run(void * arg)
 {
 	Thread * me = (Thread *) arg; // Cast the arg to Thread * which is the current thread
         // Push the cleanup static function to the cleanup functions stack to be invoked within pthread_exit
         // Notice the close curly bracket that substitute for the complementary pthread_cleanup_pop
-//        pthread_cleanup_push(cleanup,arg); }  
-//   	pthread_detach (me->pthread); 
+//        pthread_cleanup_push(cleanup,arg); }
+//   	pthread_detach (me->pthread);
 	me->threadMainBody(arg); //Invoke the thread main function body
 	me->cleanup(arg);
         pthread_exit(NULL); // Invoke pthread_exit to terminate and invoke the cleanup functions.
