@@ -1,3 +1,6 @@
+ #ifndef WRAP_H
+ #define WRAP_H
+// #pragma once
 #include "stringvar.h"
 #include "realvar.h"
 #include "numericvar.h"
@@ -5,6 +8,11 @@
 #include <unistd.h>
 #include "parse.h"
 #include "operations.h"
+#include "Threadmanage.h"
+#include "Threadexe.h"
+//#include "maps.h"
+// #include "Threadmanage.h"
+// #include "Threadexe.h"
 
 class Wrap{
     protected:
@@ -16,7 +24,6 @@ class Wrap{
         Parse parser;
         vector <string> lines;
         vector <string> :: iterator i;
-        vector <string> :: reverse_iterator ir;
         short int erline = 0; // index to the first error line after parsing
     public:
         Wrap(vector <string> line);
@@ -25,3 +32,5 @@ class Wrap{
         void check_labels();
         //~Wrap();
 };
+
+#endif

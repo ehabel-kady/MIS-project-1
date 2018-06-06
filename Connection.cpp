@@ -43,6 +43,7 @@ void * Connection::threadMainBody (void * arg)
 
 
             char * buffer = (char *) calloc(1024,sizeof(char));
+            char * buffer2 = (char *) calloc(1024,sizeof(char));
             string lines;
             ifstream myfile ("error.err");
             if (myfile.is_open())
@@ -56,9 +57,27 @@ void * Connection::threadMainBody (void * arg)
                 }
                 myfile.close();
             }
-            else 
-            {  
-                cout << "Unable to open file"; 
+            else
+            {
+                cout << "Unable to open file";
+
+            }
+            // strcat(buffer,"output file begin\n");
+            buffer+=';';
+            ifstream mfile ("output.out");
+            if (mfile.is_open())
+            {
+                while (mfile.good())
+                {
+                    getline (mfile,lines);
+                    lines+= '\n';
+                    strcat(buffer2,lines.c_str());
+                }
+                mfile.close();
+            }
+            else
+            {
+                cout << "Unable to open file";
 
             }
 
@@ -68,10 +87,11 @@ void * Connection::threadMainBody (void * arg)
             // fseek (f,0,0);  // Seek the beginning of the file
             // fread(buffer,1,fsize,f); // Read the whole file into the buffer
             // printf("%s \n", buffer);
-             tcpSocket->writeToSocket(buffer,1024); // Write the buffer to the socket
+             tcpSocket->writeToSocket(buffer,1024);
+             tcpSocket->writeToSocket(buffer2,1024); // Write the buffer to the socket
+             cout<<"connection terminated"<<endl;
             // free(buffer);	// Free the buffer
             // fclose(f);	// Close the file
-        
     }
     else
     {

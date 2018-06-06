@@ -10,6 +10,7 @@ Parse::Parse(){
         instructions.push_back("JMPGT");instructions.push_back("OUT");
         instructions.push_back("JMPGTE");instructions.push_back("SET_STR_CHAR");
         instructions.push_back("JMPLT");instructions.push_back("JMPLTE");
+        instructions.push_back("THREAD_BEGIN");instructions.push_back("THREAD_END");
 }
 int Parse::parsing(vector <string>& vec){
     Parse();
@@ -18,23 +19,20 @@ int Parse::parsing(vector <string>& vec){
     int errline =0;
     //string line1 = ""; // a string to hold each line to then push back to the vector
     //ifstream readFile1(filename); // read mis file
-    
         for(i = vec.begin(); i != vec.end(); i++){
             string x = "";
             stringstream iss(*i);
             getline(iss,x,' ');
             for(j = instructions.begin(); j != instructions.end(); j++){
                 if(x == *j){
-                    errline++;break;}             
-            } 
+                    errline++;break;}
+            }
             if(j == instructions.end()){
                 ofstream outfile;
                 outfile.open("error.err", ios_base::app);
                 outfile<<x<<" synatx error!!\n";
                 outfile.close();
-                cout<<x<<" synatx error!!\n";return errline;
-            }   
-                            
+            }
         }
         return errline;
 }

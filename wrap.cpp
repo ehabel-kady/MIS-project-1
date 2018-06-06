@@ -1,4 +1,9 @@
 #include "wrap.h"
+#include "maps.h"
+// map <pair<string,string>, Var*> varmap; //(variable map) map that has two keys to search for the variable and a value pointer to the passed object from cloning
+// map<string,operation *> ops;
+// map <string, Var *> dtypemap;
+// map<string,int> labels;
 Wrap::Wrap(vector <string> line)
 {
     //parser.parsing(filename, lines);
@@ -17,11 +22,11 @@ Wrap::Wrap(vector <string> line)
     ops["SLEEP"] = new Sleep();
     ops["SET_STR_CHAR"] = new SET_STR_CHAR();
     erline = parser.parsing(line);
-    cout<<"this is the error index line "<<erline<<'\n';
 }
 void Wrap::action()
 {
     check_labels();
+    vector<string> myvector;
     for(i = lines.begin(); i != lines.end(); i++)
     {
         string tmp = "";
@@ -29,7 +34,18 @@ void Wrap::action()
         stringstream is(*i);
         getline(is,tmp,' ');
         for(int j = tmp.length()+1; j<(*i).length();j++){tmp2 += (*i)[j];} // save the rest of the line to tmp2
-        if(tmp == "VAR"){Save_var(tmp2);}
+        if(*i == "THREAD_BEGIN")
+        {
+            i = i+1;
+            for(;*i!= "THREAD_END";i++)
+                myvector.push_back(*i);
+            cout<<myvector.size()<<endl;
+            threadmanage threadm(myvector, varmap, ops, dtypemap);
+            threadm.distribute_threads();
+            threadm.execute();
+
+        }
+        else if(tmp == "VAR"){Save_var(tmp2);}
         else if(tmp == "JMP"){i = lines.begin()+labels[tmp2];}
         else if(tmp == "JMPZ")
         {
@@ -82,13 +98,7 @@ void Wrap::action()
             }else cout<<"Undefined Object Identifier...\n";
         }
     }
-    FILE * f = fopen("error.err","r"); // Try to open the file
-    long fsize = ftell(f);
-    char * buffer = (char *) calloc(fsize+1,sizeof(char));
-    fseek (f,0,0);  // Seek the beginning of the file
-    fread(buffer,1,fsize,f); // Read the whole file into the buffer
-    printf("%s \n", buffer);
-    fclose(f);
+    usleep(500*1000);
 
 }
 void Wrap::Save_var(string line)

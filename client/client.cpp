@@ -2,6 +2,7 @@
 #include "client.h"
 #include <fstream>
 #include <iostream>
+#include <sstream>
 using namespace std;
 Client::Client(){}
 
@@ -33,10 +34,11 @@ int Client::proceed()
         return -1;
     }
     char return_content[1024] = {0};
+    char output_content[1024] = {0};
     FILE * f = fopen(file_name,"r"); // Try to open the file
     if ( f != NULL)	// If opened
         {
-            fseek (f,0,2);	// Seek to the end of the file  
+            fseek (f,0,2);	// Seek to the end of the file
             long fsize = ftell(f);	// Get current location which represents the size
 		// Allocate a buffer with the file size to read the content
             char * buffer = (char *) calloc(fsize+1,sizeof(char));
@@ -48,46 +50,51 @@ int Client::proceed()
             send(sock , buffer , fsize , 0 );
             printf("File is sent to server\n");
             valread = read( sock , return_content, 1024);
-            printf("%s\n",return_content );
+            valread = read( sock , output_content, 1024);
 
             char filename[ ] = "error.err";
+            char outfile[ ] = "output.out";
             fstream errfile;
-
+            fstream oufile;
+            stringstream is(return_content);
             errfile.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);
-
-
+            oufile.open(outfile, std::fstream::in | std::fstream::out | std::fstream::app);
+            string tmp = "";
+            string tmp2 = "";
+            // tmp = strtok(return_content,"output file begin\n");
+            // tmp2 = strtok(return_content,"\n\r\n\r");
             // If file does not exist, Create new file
-            if (!errfile ) 
+            getline(is,tmp,';');
+            getline(is,tmp2,';');
+            if (!errfile || !outfile)
             {
                //cout << "Cannot open file, file does not exist. Creating new file..";
-
                 errfile.open(filename,  fstream::in | fstream::out | fstream::trunc);
                 errfile <<return_content;
                 errfile.close();
-
-            } 
-            else   
+                cout<<return_content;
+                oufile.open(outfile,  fstream::in | fstream::out | fstream::trunc);
+                oufile <<output_content;
+                oufile.close();
+                cout<<output_content;
+            }
+            else
             {    // use existing file
                 cout<<"success "<<filename <<" found. \n";
                // cout<<"\nAppending writing and working with existing file"<<"\n---\n";
 
-                errfile << return_content;
+                errfile << tmp;
                 errfile.close();
+                oufile << tmp2;
+                oufile.close();
+
                 cout<<"\n";
-            }    
-                    // FILE * f = fopen("error.err","r"); // Try to open the file
-                    // long size = ftell(f);
-                    // char * buff = (char *) calloc(size+1,sizeof(char));
-                    // fseek (f,0,0);  // Seek the beginning of the file
-                    // fread(buff,1,size,f); // Read the whole file into the buffer
-                    // printf("%s \n", buff);
-                    // printf("%ld \n", size);
+            }
         }
         else
         {
             printf("Error opening the file \n");
         }
-    
     return 0;
 }
 

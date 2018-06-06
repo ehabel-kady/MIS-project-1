@@ -25,7 +25,15 @@ Var * StringVar::clone(stringstream & ss){
     return stringvar;
 }
 
-void StringVar::setvalue(string x){strcpy(vstring,x.c_str());}
+void StringVar::setvalue(string x, bool check_th)
+{
+    if(check_th == 1) lock_guard<std::mutex> guard(mu);
+    strcpy(vstring,x.c_str());
+}
 
-char* StringVar::getvalue(){return vstring;}
+char* StringVar::getvalue(bool check_th)
+{
+    if(check_th == 1) lock_guard<std::mutex> guard(mu);
+    return vstring;
+}
 StringVar::~StringVar(){}

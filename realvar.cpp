@@ -13,6 +13,14 @@ Var* RealVar::clone(stringstream &ss){
     realvar->initialize(ss);
     return realvar;
 }
-double RealVar::getvalue(){return vreal;}
-void RealVar::setvalue(double x){vreal = x;}
+double RealVar::getvalue(bool check_th)
+{
+    if(check_th == 1) lock_guard<std::mutex> guard(mu);
+    return vreal;
+}
+void RealVar::setvalue(double x,bool check_th)
+{
+    if(check_th == 1) lock_guard<std::mutex> guard(mu);
+    vreal = x;
+}
 RealVar::~RealVar(){}

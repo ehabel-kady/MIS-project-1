@@ -11,8 +11,10 @@ SUB $myint,100,$myint2
 DIV $myfloat,100,$myint2
 kasdjfkj
 LABEL lab1
+THREAD_BEGIN
 ADD $myint,100,20.7,300,$myint1
 OUT $myint,$mychar
+THREAD_END
 ASSIGN $myint,$myint1
 ASSIGN $mystr1,$mystr3
 ASSIGN $mystr1,”This is a test string”

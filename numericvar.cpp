@@ -13,5 +13,9 @@ Var* NumericVar::clone(stringstream &ss){
     numericvar->initialize(ss);
     return numericvar;
 }
-long NumericVar::getvalue(){return vnumeric;}
+long NumericVar::getvalue(bool check_th)
+{
+    if(check_th == 1) lock_guard<std::mutex> guard(mu);
+    return vnumeric;
+}
 NumericVar::~NumericVar(){}

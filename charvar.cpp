@@ -13,5 +13,9 @@ Var* CharVar::clone(stringstream &ss){
     charvar ->initialize(ss);
     return charvar;
 }
-char CharVar::getvalue(){return vchar;}
+char CharVar::getvalue(bool check_th)//getter
+{
+    if(check_th == 1) lock_guard<std::mutex> guard(mu);//locking the mutex in case of executing a thread
+    return vchar;
+}
 CharVar::~CharVar(){}
