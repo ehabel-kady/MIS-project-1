@@ -1,0 +1,35 @@
+VAR $mystring, STRING,100,"Hello world MIS"
+
+VAR $myint,NUMERIC,100
+VAR $myint1,NUMERIC,200
+VAR $myint2,NUMERIC,300
+VAR $myfloat,REAL,12.14
+
+THREAD_BEGIN
+LOCK $myint
+ADD $myint,100,5
+MUL $myint1,50, $myint1
+SUB $myint2,100,$myint
+OUT "This is the Value of myint", $myint , "!!\n" 
+OUT "This is the Value of myint1", $myint1 , "!!\n"
+OUT "This is the Value of myint2", $myint2 , "!!\n" 
+
+THREAD_END
+
+LOCK $myint1
+	
+THREAD_BEGIN
+out "New Thread Begin"
+ADD $myint,300,$myint1
+DIV $myfloat,100,5
+SUB $myint2,100,$myint1
+OUT "This is the Value of myint", $myint , "!!\n" 
+OUT "This is the Value of myint1", $myint1 , "!!\n"
+OUT "This is the Value of myint2", $myint2 , "!!\n" 
+ 
+SLEEP $sleep4
+THREAD_END
+
+OUT "Forked Threads and will sleep on Barriern"
+BARRIER
+OUT "Out of Barrier and exiting programn"

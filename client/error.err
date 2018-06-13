@@ -1,0 +1,20 @@
+Undefined Object Identifier...
+Error cannot find a variable or cannot assign different data type of values
+
+some text 
+"Thread 2 " 
+c
+2
+" !!\n" 
+100
+c
+530
+"Thread 2 " 
+c
+2
+" !!\n" 
+"Thread 2 " 
+c
+1
+" !!\n" 
+

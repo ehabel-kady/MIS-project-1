@@ -1,6 +1,7 @@
 VAR $myint,NUMERIC,100
 VAR $myfloat,REAL,12.14
 VAR $mychar,CHAR,’c’
+VAR $counter2,NUMERIC,3
 VAR $mystr,STRING,100,”Hello world MIS!!!”
 VAR $myint1,NUMERIC,10
 VAR $mystr1,STRING,50,"a7mad"
@@ -9,11 +10,17 @@ JMP lab1
 MUL $myint,10,5,30,$myint1
 SUB $myint,100,$myint2
 DIV $myfloat,100,$myint2
-kasdjfkj
 LABEL lab1
 THREAD_BEGIN
+SUB $myint,5,7
+OUT $myint
 ADD $myint,100,20.7,300,$myint1
 OUT $myint,$mychar
+LABEL LOOP2
+OUT "Thread 2 ",$mychar,$counter2," !!\n"
+SUB $counter2,$counter2,1
+SLEEP 1
+JMPNZ LOOP2,$counter2
 THREAD_END
 ASSIGN $myint,$myint1
 ASSIGN $mystr1,$mystr3

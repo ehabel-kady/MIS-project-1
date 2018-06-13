@@ -3,8 +3,11 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <string>
+#include <string.h>
 using namespace std;
-Client::Client(){}
+Client::Client()
+{}
 
 int Client::proceed()
 {
@@ -50,7 +53,7 @@ int Client::proceed()
             send(sock , buffer , fsize , 0 );
             printf("File is sent to server\n");
             valread = read( sock , return_content, 1024);
-            valread = read( sock , output_content, 1024);
+            //valread = read( sock , output_content, 1024);
 
             char filename[ ] = "error.err";
             char outfile[ ] = "output.out";
@@ -64,28 +67,33 @@ int Client::proceed()
             // tmp = strtok(return_content,"output file begin\n");
             // tmp2 = strtok(return_content,"\n\r\n\r");
             // If file does not exist, Create new file
-            getline(is,tmp,';');
-            getline(is,tmp2,';');
+            //tmp = return_content.substr(0,return_content.find("some text \n"));
+            //tmp2 = return_content.substr(return_content.find("some text \n"),return_content.length());
+            // tmp = substr(return_content,"some text\n");
             if (!errfile || !outfile)
             {
                //cout << "Cannot open file, file does not exist. Creating new file..";
                 errfile.open(filename,  fstream::in | fstream::out | fstream::trunc);
                 errfile <<return_content;
                 errfile.close();
-                cout<<return_content;
+                cout<<tmp;
+            }
+            if(!outfile)
+            {
+                cout<<"printing in outfile \n";
                 oufile.open(outfile,  fstream::in | fstream::out | fstream::trunc);
-                oufile <<output_content;
+                oufile <<return_content;
                 oufile.close();
-                cout<<output_content;
+                cout<<tmp2;
             }
             else
             {    // use existing file
                 cout<<"success "<<filename <<" found. \n";
                // cout<<"\nAppending writing and working with existing file"<<"\n---\n";
 
-                errfile << tmp;
+                errfile << return_content;
                 errfile.close();
-                oufile << tmp2;
+                oufile << return_content;
                 oufile.close();
 
                 cout<<"\n";

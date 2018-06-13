@@ -1,6 +1,6 @@
 #include "GarbageCollector.h"
 #include "TCPServerSocket.h"
-
+#include <string>
 int main(int argc, char** argv) {
 	// Instantiate a new TCPSocketServer Object that listens on all insterfaces on port 9999
 	TCPServerSocket * tcpServerSocket = new TCPServerSocket("0.0.0.0",9999,100);

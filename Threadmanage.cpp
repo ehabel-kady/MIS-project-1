@@ -68,6 +68,25 @@ void threadmanage::execute()
                 }
             }
         }
+        else if(tmp == "JMPNZ")
+        {
+            string lab = "";
+            string vars = "";
+            string t = tmp2;
+            stringstream iss(t);
+            getline(iss,lab,',');
+            getline(iss,vars,',');
+            operation* bf;
+            pair_array p = bf->Pair1(vars);
+            if(varmap.find(p[0]) != varmap.end()){ // to get numeric value
+                NumericVar* tmp = dynamic_cast<NumericVar*>(varmap[p[0]]);
+                if(tmp->getvalue() != 0)
+                {
+                    n = operationlines.begin()+label[lab];
+                    m = threads.begin()+label[lab];
+                }
+            }
+        }
         else if(tmp == "JMPGE")
         {
             string t = tmp2;

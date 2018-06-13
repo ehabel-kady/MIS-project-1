@@ -63,7 +63,7 @@ void * Connection::threadMainBody (void * arg)
 
             }
             // strcat(buffer,"output file begin\n");
-            buffer+=';';
+            strcat(buffer,"some text \n");
             ifstream mfile ("output.out");
             if (mfile.is_open())
             {
@@ -71,7 +71,7 @@ void * Connection::threadMainBody (void * arg)
                 {
                     getline (mfile,lines);
                     lines+= '\n';
-                    strcat(buffer2,lines.c_str());
+                    strcat(buffer,lines.c_str());
                 }
                 mfile.close();
             }
@@ -88,7 +88,7 @@ void * Connection::threadMainBody (void * arg)
             // fread(buffer,1,fsize,f); // Read the whole file into the buffer
             // printf("%s \n", buffer);
              tcpSocket->writeToSocket(buffer,1024);
-             tcpSocket->writeToSocket(buffer2,1024); // Write the buffer to the socket
+             //tcpSocket->writeToSocket(buffer2,1024); // Write the buffer to the socket
              cout<<"connection terminated"<<endl;
             // free(buffer);	// Free the buffer
             // fclose(f);	// Close the file
